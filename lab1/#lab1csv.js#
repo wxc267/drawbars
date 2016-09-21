@@ -14,44 +14,42 @@ function csv_draw_bar(species)
     var species_length=0;
     for(var i=0;i<data.length;i++)
     {
-	
-	    if(data[i][0]===species)
+	if(i==0)
 	    {
-		species_length++;
+		tmp = 0;
+		avgs.push(tmp);
 	    }
-	    for(var j=0;j<data[i].length;j++)
-	    {
-		if(i==0)
-		{
-		    tmp = 0;
-		    avgs.push(tmp);
-		}
-		
-		if(data[i][0]===species&&j!=0){
+	if(data[i][0]===species){
+	species_length++;
+	for(var j=0;j<data[i].length;j++)
+	{
+	    
+	   
+		if(j!=0){
 		    
-		    avgs[j]+=Number(data[i][j]);
-		    
-		    
-		    
+			avgs[j]+=Number(data[i][j]);
+			
+			
+		   
 		}
 	    }
 	    
-	
+	}
+	}
     }
-    
     for(var j=0; j<data[0].length;j++)
     {
-	avgs[j]=avgs[j]/species_length;
+	avgs[j]=avgs[j]/(species_length-1);
 	console.log(" column "+j+" Avg = "+avgs[j]); 
     }
     has_avg=true;
     console.log("length="+species_length);
     createBarVertices(avgs);
 }
-
-
-function csv_draw_bars() {
     
+    
+function csv_draw_bars() {
+
     for (var i=0; i<data.length; i++) {
 	for (var j=0; j<data[i].length; j++) {
 	    if (i==0) { tmp = 0; avgs.push(tmp); }

@@ -10,9 +10,9 @@
 <!--  ************** Fragment Shader ************* --> 
 <script id="shader-fs" type="x-shader/x-fragment">
 precision mediump float;
-
+varying vec4 vColor; 
 void main(void) {
-        gl_FragColor = vec4(1,0,0,1); 
+        gl_FragColor = vColor; 
     }
 </script>
 
@@ -20,17 +20,18 @@ void main(void) {
 <script id="shader-vs" type="x-shader/x-vertex">
 
     attribute vec3 aVertexPosition;
-
+attribute vec4 aVertexColor;
+varying vec4 vColor; 
 
     void main(void) {
 
       gl_Position = vec4(aVertexPosition, 1.0);
-
+	vColor = aVertexColor; 
     }
 </script>
 
 
-<script type="text/javascript" src="shaders_setup.js"></script>
+<script type="text/javascript" src="shadersetup.js"></script>
 <script type="text/javascript" src="lab1.js"></script>
 <script type="text/javascript" src="lab1csv.js"></script>
 <script type="text/javascript" src="readcsv.js"></script>
@@ -52,8 +53,11 @@ void main(void) {
     <button  onclick="BG(0,0,0)"> Black</button>
     <button  onclick="BG(1,1,1)"> White</button>
 
-
-    <button  onclick="csv_draw_bars()"> Draw Bars </button>
+    <h4> Darw Bars: </h4>
+    <button onclick="csv_draw_bar('setosa')">setosa</button>
+    <button onclick="csv_draw_bar('versicolor')">versicolor</button>
+    <button onclick="csv_draw_bar('virginica')">virginica</button>
+    <button  onclick="csv_draw_bars()"> Draw All </button>
 
  
  <div>
