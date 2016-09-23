@@ -44,19 +44,13 @@ void main(void) {
     <canvas id="code05-canvas" style="border:none;"width="700"height="700"></canvas>
 
 
-    <h4> Background:  </h4>
-    <button  onclick="BG(1,0,0)"> Red</button>
-    <button  onclick="BG(0,1,0)"> Green</button>
-    <button  onclick="BG(0,0,1)"> Blue</button>
-    <button  onclick="BG(0.5,0.5,0.5)"> Grey</button>
-    <button  onclick="BG(0,0,0)"> Black</button>
-    <button  onclick="BG(1,1,1)"> White</button>
+
 
     <h4> Darw Bars: </h4>
-    <button onclick="clear();csv_draw_bar('setosa')">setosa</button>
-    <button onclick="clear();csv_draw_bar('versicolor')">versicolor</button>
-    <button onclick="clear();csv_draw_bar('virginica')">virginica</button>
-    <button  onclick="clear();csv_draw_bars()"> Draw All </button>
+    <button onclick="csv_draw_all_bars('setosa')">Setosa Average</button>
+    <button onclick="csv_draw_all_bars('versicolor')">Versicolor Average</button>
+    <button onclick="csv_draw_all_bars('virginica')">Virginica Average</button>
+    <button  onclick="csv_draw_all_bars('all')"> Draw All </button>
 
  
  <div>
