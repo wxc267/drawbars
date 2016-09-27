@@ -14,6 +14,7 @@ function set_data(lines) {
     has_data = true;
     calculate_avgs();
 }
+//calculate the average of the data
 function calculate_avgs()
 {
    //initial values
@@ -23,42 +24,42 @@ function calculate_avgs()
     setosa_avgs=[];
     versicolor_avgs=[];
     virginica_avgs=[];
-
+    
     //draw all bars
     for(var i=0;i<data.length;i++)
     {
-	 if(data[i][0]==="setosa")
+	if(data[i][0]==="setosa")
 	    {
 		setosa_length++;
 	    }
 	else if(data[i][0]==="versicolor")
 	{
-		versicolor_length++;
+	    versicolor_length++;
 	}
 	else if(data[i][0]==="virginica")
 	{
-		virginica_length++;
+	    virginica_length++;
 	}
-	    for(var j=0;j<data[i].length;j++)
+	for(var j=0;j<data[i].length;j++)
+	{
+	    if(i==0)
 	    {
-		if(i==0)
-		{
-		    tmp = 0;
-		    setosa_avgs.push(tmp);
-		    versicolor_avgs.push(tmp);
-		    virginica_avgs.push(tmp);
-		}
-		
-		if(data[i][0]==="setosa"&&j!=0){
-		    
-		    setosa_avgs[j]+=Number(data[i][j]);	    
-		}else if(data[i][0]==="versicolor"&&j!=0){
-		    versicolor_avgs[j]+=Number(data[i][j]);
-		}
-		else if(data[i][0]==="virginica"&&j!=0){
-		    virginica_avgs[j]+=Number(data[i][j]);
-		}
+		tmp = 0;
+		setosa_avgs.push(tmp);
+		versicolor_avgs.push(tmp);
+		virginica_avgs.push(tmp);
 	    }
+	    
+	    if(data[i][0]==="setosa"&&j!=0){
+		
+		setosa_avgs[j]+=Number(data[i][j]);	    
+	    }else if(data[i][0]==="versicolor"&&j!=0){
+		versicolor_avgs[j]+=Number(data[i][j]);
+	    }
+	    else if(data[i][0]==="virginica"&&j!=0){
+		virginica_avgs[j]+=Number(data[i][j]);
+	    }
+	}
     }
     for(var j=0; j<data[0].length;j++)
     {
@@ -68,27 +69,26 @@ function calculate_avgs()
 	virginica_avgs[j]=virginica_avgs[j]/virginica_length;
     }
 }
-
 function csv_draw_bars(species) {
    
-   var avgs;
-   if(species==="setosa")
-   {
+    var avgs;
+    if(species==="setosa")
+    {
 	avgs=[setosa_avgs];
-   }else if(species==="versicolor")
-   {
+    }else if(species==="versicolor")
+    {
 	avgs=[versicolor_avgs];
-   }else if(species==="virginica")
-   {
+    }else if(species==="virginica")
+    {
 	avgs=[virginica_avgs];
-   }
-   else if(species==="all")
-   {
+    }
+    else if(species==="all")
+    {
 	avgs=[setosa_avgs,versicolor_avgs,virginica_avgs];
-   }
-
-   
-   createAllVerticies(avgs);
+    }
+    
+    
+    createAllVerticies(avgs);
     
 }
 
