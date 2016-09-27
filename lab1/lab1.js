@@ -2,7 +2,8 @@
     var gl;
     var shaderProgram;
     var draw_type=2;
-    
+    var v_margin = 0.25;
+    var index;
 
 //////////// Init OpenGL Context etc. ///////////////
 
@@ -34,7 +35,10 @@
     var num_vertices; 
     var num_indices;
     var num_color;
-
+    var black=[0.0,0.0,0.0,1.0,
+		     0.0,0.0,0.0,1.0,
+		     0.0,0.0,0.0,1.0,
+		     0.0,0.0,0.0,1.0]
     var red_bar=[1.0,0.0,0.0,1.0,
 		 1.0,0.0,0.0,1.0,
                  1.0,0.0,0.0,1.0,
@@ -57,9 +61,10 @@
 	indices=[];
 	color=[];
 	var num_bars = avgs.length*5;
-	num_vertices = num_bars*4;
-	num_indices = num_bars*6;
-	num_colors=num_bars*4;
+	var total_num_bars=num_bars+12;//plus 2 for axis for x,y and some graduations.
+	num_vertices = total_num_bars*4;
+	num_indices = total_num_bars*6;
+	num_colors=total_num_bars*4;
 	var min, max;
 	var width; 
 	min = Number(avgs[0][0]);  max = Number(avgs[0][0]); 
@@ -71,10 +76,9 @@
 	    }
 	} 
 	width = max-min; //the hight of each bar
-	
-	var v_margin = 0.25; 
+
 	var h = 2/(num_bars*3+1); //the width of each bar
-	var index=0;//the index of bar
+	index=0;//the index of bar
 	for (var i =0; i<avgs.length; i++) {
 	    //assign color to each bar
 	    color=color.concat(red_bar);
@@ -82,7 +86,6 @@
 	    color=color.concat(blue_bar);
 	    color=color.concat(green_bar);
 	    color=color.concat(red_bar);
-	    console.log(color);
 	    
 	for(var j=0;j<avgs[i].length;j++){
 	    //push verticies position by 3(x,y,z)
@@ -99,15 +102,60 @@
 	    }
 		 	    
 	}
-
+	
+	
+	addAxis();
+	//init buffers and draw
         initBuffers(); 
 
         drawScene();
 	
 
     }
+   //add the axis
+   function addAxis()
+   {
+	//push x-axis
+	vertices.push(-0.9);vertices.push(-1+  v_margin-0.01);vertices.push(0.0);
+	vertices.push(0.5);vertices.push(-1+  v_margin-0.01);vertices.push(0.0);
+	vertices.push(0.5);vertices.push(-1+  v_margin);vertices.push(0.0);
+	vertices.push(-0.9);vertices.push(-1+  v_margin);vertices.push(0.0);
+	indices.push(0+4*index);  indices.push(1+4*index);  indices.push(2+4*index);
+	indices.push(0+4*index);  indices.push(2+4*index);  indices.push(3+4*index);
+	index++;
+	
+	
+	color=color.concat(black);
+	//push y-axis
+	vertices.push(-0.91);vertices.push(-1+  v_margin-0.01);vertices.push(0.0);
+	vertices.push(-0.9);vertices.push(-1+  v_margin-0.01);vertices.push(0.0);
+	vertices.push(-0.9);vertices.push(0.9);vertices.push(0.0);
+	vertices.push(-0.91);vertices.push(0.9);vertices.push(0.0);
+	indices.push(0+4*index);  indices.push(1+4*index);  indices.push(2+4*index);
+	indices.push(0+4*index);  indices.push(2+4*index);  indices.push(3+4*index);
+	index++;
+	
+	
+	color=color.concat(black);
+	var height =0.18;
+	
+	//push graduation on the y-axis
+	for(var i=0;i<10;i++)
+	{
+		var y_begin=(i+1)*height+v_margin-1;
+		vertices.push(-0.9);vertices.push(y_begin);vertices.push(0.0);
+		vertices.push(-0.85);vertices.push(y_begin);vertices.push(0.0);
+		vertices.push(-0.85);vertices.push(y_begin+0.01);vertices.push(0.0);
+		vertices.push(-0.9);vertices.push(y_begin+0.01);vertices.push(0.0);
+		indices.push(0+4*index);  indices.push(1+4*index);  indices.push(2+4*index);
+		indices.push(0+4*index);  indices.push(2+4*index);  indices.push(3+4*index);
+		index++;
+		color=color.concat(black);
 
+	}
+	
 
+   }
    ////////////////    Initialize VBO  ////////////////////////
 
     function initBuffers() {
@@ -171,9 +219,7 @@
         gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute);
 	//initial with white color
         gl.clearColor(1.0, 1.0, 1.0, 1.0);
-
     }
-
 
 
    
