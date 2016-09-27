@@ -35,7 +35,7 @@
     var num_vertices; 
     var num_indices;
     var num_color;
-    var black_color=[0.0,0.0,0.0,1.0,
+    var black=[0.0,0.0,0.0,1.0,
 		     0.0,0.0,0.0,1.0,
 		     0.0,0.0,0.0,1.0,
 		     0.0,0.0,0.0,1.0]
@@ -51,17 +51,21 @@
 		   0.0,1.0,0.0,1.0,
 		   0.0,1.0,0.0,1.0,
 		   0.0,1.0,0.0,1.0];
-    var yellow_bar=[0.0,1.0,1.0,1.0,
+    var cyan_bar=[0.0,1.0,1.0,1.0,
 		   0.0,1.0,1.0,1.0,
 		   0.0,1.0,1.0,1.0,
 		   0.0,1.0,1.0,1.0];
+    var color_array=[cyan_bar,blue_bar,green_bar,red_bar];
+    var num_axis=2;
+    var num_graduation=10;
+    var num_legend=4;
     function createAllVerticies(avgs)
     {
 	vertices=[];
 	indices=[];
 	color=[];
 	var num_bars = avgs.length*5;
-	var total_num_bars=num_bars+12;//plus 2 for axis for x,y and some graduations.
+	var total_num_bars=num_bars+num_axis+num_graduation+num_legend;//plus 2 for axis for x,y and some graduations.
 	num_vertices = total_num_bars*4;
 	num_indices = total_num_bars*6;
 	num_colors=total_num_bars*4;
@@ -82,7 +86,7 @@
 	for (var i =0; i<avgs.length; i++) {
 	    //assign color to each bar
 	    color=color.concat(red_bar);
-	    color=color.concat(yellow_bar);
+	    color=color.concat(cyan_bar);
 	    color=color.concat(blue_bar);
 	    color=color.concat(green_bar);
 	    color=color.concat(red_bar);
@@ -105,6 +109,7 @@
 	
 	
 	addAxis();
+	addLegend();
 	//init buffers and draw
         initBuffers(); 
 
@@ -115,65 +120,64 @@
    //add the axis
    function addAxis()
    {
-	//push x-axis
-	vertices.push(-0.9);vertices.push(-1+  v_margin-0.01);vertices.push(0.0);
-	vertices.push(0.5);vertices.push(-1+  v_margin-0.01);vertices.push(0.0);
-	vertices.push(0.5);vertices.push(-1+  v_margin);vertices.push(0.0);
-	vertices.push(-0.9);vertices.push(-1+  v_margin);vertices.push(0.0);
-	indices.push(0+4*index);  indices.push(1+4*index);  indices.push(2+4*index);
-	indices.push(0+4*index);  indices.push(2+4*index);  indices.push(3+4*index);
-	index++;
+	//create x_axis
+	var new_x_axis=[-0.9,-1+v_margin-0.01,0.0,
+		    0.5,-1+v_margin-0.01,0.0,
+		    0.5,-1+v_margin,0.0,
+		    -0.9,-1+v_margin,0.0];
+	addBar(new_x_axis,black);
 	
-	
-	for(var i=0;i<4;i++)
-	{
-		color.push(0.0);
-		color.push(0.0);
-		color.push(0.0);
-		color.push(1.0);
-	}
+	var new_y_axis=[-0.91,-1+v_margin-0.01,0.0,
+		    -0.9,-1+v_margin-0.01,0.0,
+		    -0.9,0.9,0.0,
+		    -0.91,0.9,0.0];
+	addBar(new_y_axis,black);
 	//push y-axis
-	vertices.push(-0.91);vertices.push(-1+  v_margin-0.01);vertices.push(0.0);
-	vertices.push(-0.9);vertices.push(-1+  v_margin-0.01);vertices.push(0.0);
-	vertices.push(-0.9);vertices.push(0.9);vertices.push(0.0);
-	vertices.push(-0.91);vertices.push(0.9);vertices.push(0.0);
-	indices.push(0+4*index);  indices.push(1+4*index);  indices.push(2+4*index);
-	indices.push(0+4*index);  indices.push(2+4*index);  indices.push(3+4*index);
-	index++;
 	
-	
-	for(var i=0;i<4;i++)
-	{
-		color.push(0.0);
-		color.push(0.0);
-		color.push(0.0);
-		color.push(1.0);
-	}
 	var height =0.18;
 	
 	//push graduation on the y-axis
 	for(var i=0;i<10;i++)
 	{
 		var y_begin=(i+1)*height+v_margin-1;
-		vertices.push(-0.9);vertices.push(y_begin);vertices.push(0.0);
-		vertices.push(-0.85);vertices.push(y_begin);vertices.push(0.0);
-		vertices.push(-0.85);vertices.push(y_begin+0.01);vertices.push(0.0);
-		vertices.push(-0.9);vertices.push(y_begin+0.01);vertices.push(0.0);
-		indices.push(0+4*index);  indices.push(1+4*index);  indices.push(2+4*index);
-		indices.push(0+4*index);  indices.push(2+4*index);  indices.push(3+4*index);
-		index++;
-	
-	
-		for(var j=0;j<4;j++)
-		{
-			color.push(0.0);
-			color.push(0.0);
-			color.push(0.0);
-			color.push(1.0);
-		}
+		var new_graduation=[ -0.9,y_begin,0.0,
+				     -0.85,y_begin,0.0,
+				     -0.85,y_begin+0.01,0.0,
+				     -0.9,y_begin+0.01,0.0];
+		addBar(new_graduation,black);
+		
 
 	}
 	
+
+   }
+   function addLegend()
+   {
+	for(var i=0;i<4;i++)
+	{
+		var x_left=0.7;
+		var x_right=0.75;
+		var y_bottom=x_left-0.1*i;
+		var y_top=x_right-0.1*i;
+		var new_vertices=[x_left,x_left,0.0,
+				  x_right,x_right-i,0.0,
+				  x_right,x_right-i,0.0,
+				  x_left,x_left-i,0.0];
+		addBar(new_vertices,color_array[i]);
+
+	}
+	
+
+   }
+
+
+   function addBar(new_bar_vertices,new_color)
+   {
+	vertices=vertices.concat(new_bar_vertices);
+	indices.push(0+4*index);  indices.push(1+4*index);  indices.push(2+4*index);
+	indices.push(0+4*index);  indices.push(2+4*index);  indices.push(3+4*index);
+	index++;
+	color=color.concat(new_color);
 
    }
    ////////////////    Initialize VBO  ////////////////////////
